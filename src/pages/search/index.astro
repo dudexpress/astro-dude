@@ -1,0 +1,107 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import GameCard from "../../components/misc/GameCard.astro";
+import {buildPosts, getPostFiles, sortPosts} from "../../utils.ts";
+
+const allPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+
+const searchData = allPosts.map((post) => ({
+  title: post.frontmatter.title,
+  description: post.frontmatter.description,
+  designer: post.frontmatter.designer,
+}));
+---
+
+<Layout title='Cerca'>
+    <div class="flex justify-center">
+        <div class="container mb-5">
+            <div class="grid grid-cols-12">
+                <div class="col-span-8 col-start-3">
+                    <div class="my-6">
+                        <h1 class="text-4xl font-medium">Cerca</h1>
+                    </div>
+
+                    <div class="search-container mb-8">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Cerca tra i titoli..."
+                            autocomplete="off"
+                            class="w-full px-4 py-3 border-10 border-gray200 rounded-xl hover:border-[#d9dfe5] focus:border-[#d9dfe5] focus:outline-none"
+                        />
+                    </div>
+
+                    <div id="results" class="flex flex-col gap-2">
+                        {allPosts.map((post, index) => (
+                            <div class="result-item" data-index={index}>
+                                <GameCard {...post} />
+                            </div>
+                        ))}
+                    </div>
+
+                    <div id="noResults" class="text-center py-12 text-gray-400 hidden">
+                        Nessun risultato trovato
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    import Fuse from 'fuse.js';
+
+    const resultsContainer = document.getElementById('results');
+    const searchDataElement = resultsContainer?.getAttribute('data-search');
+    const searchData = searchDataElement ? JSON.parse(searchDataElement) : [];
+
+    const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+    const noResultsEl = document.getElementById('noResults') as HTMLElement;
+    const allItems = document.querySelectorAll('[data-index]') as NodeListOf<HTMLElement>;
+
+    const fuse = new Fuse(searchData, {
+        keys: ['title', 'description', 'designer'],
+        threshold: 0.3,
+        includeScore: true,
+    });
+
+    function displayResults(indices: number[]) {
+        const hasResults = indices.length > 0;
+        const maxResults = 10;
+        const limitedIndices = indices.slice(0, maxResults);
+
+        allItems.forEach((item, index) => {
+            item.style.display = limitedIndices.includes(index) ? 'block' : 'none';
+        });
+
+        if (hasResults) {
+            noResultsEl.classList.add('hidden');
+            if (resultsContainer) resultsContainer.style.display = 'flex';
+        } else {
+            noResultsEl.classList.remove('hidden');
+            if (resultsContainer) resultsContainer.style.display = 'none';
+        }
+    }
+
+    searchInput?.addEventListener('input', (e) => {
+        const query = (e.target as HTMLInputElement).value.trim();
+
+        if (query === '') {
+            // Mostra tutti
+            const allIndices = Array.from({ length: allItems.length }, (_, i) => i);
+            displayResults(allIndices);
+        } else {
+            // Cerca e mostra solo i risultati
+            const results = fuse.search(query);
+            const resultIndices = results.map((result) => result.refIndex);
+            displayResults(resultIndices);
+        }
+    });
+</script>
+
+<script is:inline define:vars={{ searchData }}>
+    const resultsContainer = document.getElementById('results');
+    if (resultsContainer) {
+        resultsContainer.setAttribute('data-search', JSON.stringify(searchData));
+    }
+</script>

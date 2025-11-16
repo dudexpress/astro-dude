@@ -1,0 +1,104 @@
+---
+import {authors} from "../authors";
+import type {Author} from "../types";
+import {faGlobeEurope} from "@fortawesome/free-solid-svg-icons/faGlobeEurope";
+import {faYoutube} from "@fortawesome/free-brands-svg-icons/faYoutube";
+import {faTiktok} from "@fortawesome/free-brands-svg-icons/faTiktok";
+import {faFacebook} from "@fortawesome/free-brands-svg-icons/faFacebook";
+import {faInstagram} from "@fortawesome/free-brands-svg-icons/faInstagram";
+import {icon} from "@fortawesome/fontawesome-svg-core";
+import {slug} from "../utils";
+
+interface Props {
+  writerName: string | undefined;
+  asCard: boolean;
+  inAdvisor?: boolean;
+}
+
+const {writerName, asCard, inAdvisor} = Astro.props;
+
+const author = authors.find((x: Author) => x.name === writerName);
+
+if (!author) {
+  throw new Error(`Author "${writerName}" not found`);
+}
+
+const socialLinks = [
+  {url: author.instagram_url, icon: faInstagram},
+  {url: author.youtube_url, icon: faYoutube},
+  {url: author.facebook_url, icon: faFacebook},
+  {url: author.tiktok_url, icon: faTiktok},
+  {url: author.website, icon: faGlobeEurope},
+].filter(social => social.url != null);
+
+const writerSlug = slug(author.name);
+---
+
+<div
+        class:list={[
+          "p-2 border-10 border-white rounded-lg",
+          {
+            "mt-[calc(var(--box-height)_/_3)] bg-gray200": asCard,
+            "p-0 !mt-4": inAdvisor,
+          },
+        ]}
+>
+  {asCard ? (
+          <a href={`/writers/${writerSlug}`} class="block p-1 !no-underline">
+              <div class="grid grid-cols-1 gap-1 md:grid-cols-6 md:gap-3">
+                  <div class="mb-3 md:mb-0">
+                      <img
+                              src={`/people/${author.image}`}
+                              alt={author.name}
+                              class="rounded-2xl w-[33%] md:w-full"
+                      />
+                  </div>
+
+                  <div class="col-span-5">
+                      <div class="flex flex-col justify-center h-full text-gray400">
+                          <h4 class="font-semibold font-sans text-2xl mb-1">
+                            {author.name}
+                          </h4>
+                          <p class="text-gray400 text-xl font-serif">{author?.summary}</p>
+                      </div>
+                  </div>
+              </div>
+          </a>
+  ) : (
+          <div class="grid grid-cols-1 gap-1 md:grid-cols-6 md:gap-3">
+              <div class="mb-3 md:mb-0">
+                  <img
+                          src={`/people/${author.image}`}
+                          alt={author.name}
+                          class="rounded-2xl w-[33%] md:w-full"
+                  />
+              </div>
+
+              <div class="col-span-5">
+                  <div class="flex flex-col justify-center h-full text-gray400">
+                      <h4 class="font-semibold font-sans text-2xl mb-1 flex items-center gap-1">
+                        {author.name}
+                        {socialLinks.length > 0 && (
+                          <div class="text-gray300">
+                            {socialLinks.map(({url, icon: socialIcon}) => (
+                                    <a href={url} target="_blank" rel="noopener noreferrer" class="inline-block">
+                                        <i class="icon" set:html={icon(socialIcon).html} />
+                                    </a>
+                            ))}
+                          </div>
+                        )}
+                      </h4>
+                      <p class="text-gray400 text-xl font-serif">{author?.summary}</p>
+                  </div>
+              </div>
+          </div>
+  )}
+</div>
+
+<style>
+    .icon {
+        width: 1em;
+        height: 1em;
+        display: block;
+    }
+</style>

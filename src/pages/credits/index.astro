@@ -1,0 +1,63 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+interface Icon {
+  name: string;
+  url: string;
+}
+
+const icons: Icon[] = [
+  { name: "whale", url: "vLoyKUoYhPuX/whale" },
+  { name: "corgi", url: "116897/corgi" },
+  { name: "elephant", url: "101717/elephant" },
+  { name: "hummingbird", url: "_tOGCvyYkx7s/hummingbird" },
+  { name: "parrot", url: "8Yhi0cuR80EI/parrot" },
+  { name: "woman", url: "SSfJ7MRp9qFs/woman" },
+  { name: "woman", url: "QvUXDRHlRbI0/woman" },
+  { name: "woman", url: "2IWbKLq6AxuJ/woman" },
+  { name: "woman", url: "rKoU3TfWBuZz/woman" },
+  { name: "woman", url: "FlwLlmA9IP8d/woman" },
+  { name: "woman", url: "7iD2xZ2XTgaI/woman" },
+  { name: "woman", url: "VGbcWHIzNwLW/woman" },
+  { name: "woman", url: "ru1fDgX61vqA/woman" },
+  { name: "man", url: "p2HqVHxNq3CQ/man" },
+  { name: "man", url: "hn6wdLdmoBYd/man" },
+  { name: "man", url: "ioDdQy2TH8B5/man" },
+  { name: "man", url: "rKBmYRUjvbdl/man" },
+  { name: "man", url: "c9J06F8lHhV7/man" },
+  { name: "man", url: "VvMpLZL5r0aX/man" },
+  { name: "man", url: "x0GTt798eXuD/man" },
+  { name: "man", url: "dkYCqZS6eHXG/man" },
+  { name: "heart", url: "95473/heart" },
+  { name: "half-heart", url: "6I8HUVi4eZCN/half-heart" },
+];
+---
+
+<Layout title="Credits">
+    <div class="flex justify-center">
+        <div class="container mb-5">
+            <div class="grid grid-cols-12">
+                <div class="col-span-8 col-start-3">
+                    <div class="my-6">
+                        <h1 class="text-4xl font-medium">Credits</h1>
+                    </div>
+                    <div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-1">
+                          {icons.map((icon) => (
+                            <div>
+                              <a target="_blank" href={`https://icons8.com/icon/${icon.url}`} class="hover:underline text-blue">
+                                {icon.name}
+                              </a>
+                              {" "}icon by{" "}
+                              <a target="_blank" href="https://icons8.com" class="hover:underline text-blue">
+                                Icons8
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

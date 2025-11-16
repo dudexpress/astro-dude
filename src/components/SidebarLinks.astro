@@ -1,0 +1,83 @@
+---
+import { slug } from "../utils";
+
+interface Props {
+  type: "designers" | "publishers" | "mechanisms";
+  title?: string;
+  values: string[];
+  withMore?: boolean;
+  small?: boolean;
+  avoidLinks?: boolean;
+}
+
+const {type, title, values = [], withMore = false, small = false, avoidLinks = false} = Astro.props;
+
+const defaultTitle: Record<Props["type"], string> = {
+  designers: "Autori",
+  publishers: "Editori",
+  mechanisms: "Meccaniche",
+};
+
+const andManyMore: Record<Props["type"], string> = {
+  designers: "e molti altri...",
+  publishers: "e molti altri...",
+  mechanisms: "e molte altre...",
+};
+
+---
+
+{small ? (
+<div class="text-center lg:text-start">
+    <div class="flex flex-row justify-center flex-wrap gap-0.5">
+      {values.map((tag) => (
+        avoidLinks ? (
+          <span class="badge">{tag}</span>
+        ) : (
+          <a href={`/${type}/${slug(tag)}`}>
+              <span class="badge">{tag}</span>
+          </a>
+        )
+      ))}
+    </div>
+</div>
+  ) : (
+<div class="mb-6 text-center lg:text-start">
+    <h5 class="font-semibold text-xl text-gray300 mb-0.5">{title ?? defaultTitle[type] ?? "n/a"}</h5>
+    <div class="flex flex-col gap-0.5">
+      {values.map((tag) => (
+        avoidLinks ? (
+                <span class="badge">{tag}</span>
+        ) : (
+                <a href={`/${type}/${slug(tag)}`}>
+                    <span class="badge">{tag}</span>
+                </a>
+        )
+      ))}
+      {withMore && (
+              <a href={`/${type}`} class="text-blue hover:underline cursor-pointer">
+                {andManyMore[type]}
+              </a>
+      )}
+    </div>
+</div>
+  )}
+
+<style>
+    .badge {
+        display: inline-block;
+        line-height: 1;
+        padding: var(--spacing) var(--spacing);
+        background: var(--white) !important;
+        color: var(--red);
+        border: 1px solid var(--red);
+        border-radius: var(--radius-lg);
+        font-size: var(--text-sm);
+        transition: background-color 0.2s ease-out;
+        text-decoration: none;
+    }
+
+    a:hover .badge {
+        background: var(--red) !important;
+        color: var(--white);
+    }
+</style>

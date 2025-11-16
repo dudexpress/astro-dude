@@ -1,0 +1,15 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: string;
+  officialValue: string;
+  small?: boolean;
+}
+
+const { value, officialValue, small } = Astro.props;
+---
+
+<BaseBox title="Durata" footer={`Dichiarati: ${officialValue}`} small={small}>
+  {value}
+</BaseBox>

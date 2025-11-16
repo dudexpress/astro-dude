@@ -1,0 +1,50 @@
+---
+// Dropdown.astro in TailwindCSS – no JS
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+
+import { icon } from "@fortawesome/fontawesome-svg-core";
+---
+<style>
+    .icon {
+        width: 1em;
+        height: 1em;
+        display: block;
+    }
+</style>
+
+<details class="relative cursor-pointer w-25">
+    <summary class="flex items-center justify-end font-semibold gap-1">
+        Rubriche
+        <i class="icon" set:html={icon(faChevronDown).html} />
+    </summary>
+
+    <div class="absolute left-0 top-full z-10 mt-1 w-full rounded-lg border border-gray200 bg-white shadow-lg w-full py-1">
+        <a href="/reviews" class="block px-2 py-1 hover:bg-[#d9dfe5] w-full">
+            <span class="font-semibold">Dude</span>Review
+        </a>
+
+        <a href="/previews" class="block px-2 py-1 hover:bg-[#d9dfe5] w-full">
+            <span class="font-semibold">Dude</span>Preview
+        </a>
+
+
+        <a href="/nexts" class="block px-2 py-1 hover:bg-[#d9dfe5] w-full">
+            <span class="font-semibold">Dude</span>Next
+        </a>
+
+
+        <a href="/advisor" class="block px-2 py-1 hover:bg-[#d9dfe5] w-full">
+            <span class="font-semibold">Dude</span>Advisor
+        </a>
+
+
+        <a href="/interview" class="block px-2 py-1 hover:bg-[#d9dfe5] w-full">
+            <span class="font-semibold">Dude</span>Interview
+        </a>
+
+
+        <a href="/convention" class="block px-2 py-1 hover:bg-[#d9dfe5] w-full">
+            <span class="font-semibold">Dude</span>Con
+        </a>
+    </div>
+</details>

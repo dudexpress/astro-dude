@@ -1,0 +1,32 @@
+---
+import {buildPosts, getPostFiles, slug, sortPosts} from "../../utils";
+import GameList from "../../layouts/GameList.astro";
+
+export async function getStaticPaths() {
+  const sortedPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+
+  const mechanisms = new Set<string>();
+  sortedPosts.forEach((page) => {
+    if (page.frontmatter?.mechanisms && Array.isArray(page.frontmatter.mechanisms)) {
+      page.frontmatter.mechanisms.forEach((mechanism: string) => {
+        mechanisms.add(mechanism);
+      });
+    }
+  });
+
+  return [...mechanisms].map((mechanism) => ({
+    params: {mechanism_slug: slug(mechanism)},
+    props: {
+      mechanism,
+      allPosts: sortedPosts.filter((page) => page.frontmatter.mechanisms?.some((m: string) => slug(m) === slug(mechanism)))
+    },
+  }));
+}
+
+const {mechanism, allPosts} = Astro.props;
+if (mechanism == null) {
+  throw new Error(`Mechanism not found`);
+}
+---
+
+<GameList title={mechanism} subTitle="vedi tutte le meccaniche" folderUrl="/mechanisms" games={allPosts} />

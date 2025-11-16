@@ -1,0 +1,22 @@
+---
+import GameCard from "./GameCard.astro";
+import {getPostFiles, buildPosts, shuffle} from "../../utils.ts";
+
+const allFiles = getPostFiles();
+shuffle(allFiles)
+const allPosts = await buildPosts(allFiles.slice(0, 3))
+---
+
+<div class="flex justify-center my-15 ">
+
+    <div class="container">
+        <div class="grid grid-cols-12 gap-2">
+            <div class="col-span-12 md:col-span-8">
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-3xl font-medium">Potrebbe interessarti anche...</h2>
+                    {allPosts.map((post) => <GameCard {...post} />)}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

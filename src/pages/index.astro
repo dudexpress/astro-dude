@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlogPostHeader from "../components/BlogPostHeader.astro";
+import {buildPosts, getPostFiles, sortPosts} from "../utils.ts";
+import GameCard from "../components/misc/GameCard.astro";
+import SidebarLinks from "../components/SidebarLinks.astro";
+
+const allPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+const [lastPost, ...lastPosts] = allPosts.slice(0,10)
+
+let mechanismsCounter: Record<string, number> = {}
+let designersCounter: Record<string, number> = {}
+let publishersCounter: Record<string, number> = {}
+
+for (const {frontmatter} of allPosts) {
+  for (const m of frontmatter.designer ?? []) {
+    designersCounter[m] = (designersCounter[m] ?? 0) + 1
+  }
+  for (const m of frontmatter.publisher ?? []) {
+    publishersCounter[m] = (publishersCounter[m] ?? 0) + 1
+  }
+  for (const m of frontmatter.mechanisms ?? []) {
+    mechanismsCounter[m] = (mechanismsCounter[m] ?? 0) + 1
+  }
+}
+
+const sortedDesigners = Object.keys(designersCounter).sort((a, b) => designersCounter[b] - designersCounter[a])
+const sortedPublishers = Object.keys(publishersCounter).sort((a, b) => publishersCounter[b] - publishersCounter[a])
+const sortedMechanisms = Object.keys(mechanismsCounter).sort((a, b) => mechanismsCounter[b] - mechanismsCounter[a])
+
+---
+
+<Layout>
+    <BlogPostHeader {...lastPost} isHomepage={true}  />
+
+    <div class="flex justify-center">
+    <div class="container">
+    <div class="grid grid-cols-12 gap-2">
+      <div class="col-span-8">
+      {lastPosts.map((post) => <GameCard {...post} />)}
+          <div class="text-center">
+              <a href="/blog/2">
+                  <button class="mt-2 mb-5 text-blue hover:underline cursor-pointer">Scopri altri articoli</button>
+              </a>
+          </div>
+      </div>
+        <div class="col-span-4">
+            <SidebarLinks type="designers" title="Naviga per autori" values={sortedDesigners.slice(0, 10)} withMore />
+            <SidebarLinks type="publishers" title="Naviga per editori" values={sortedPublishers.slice(0, 10)} withMore />
+            <SidebarLinks
+                    type="mechanisms"
+                    title="Naviga per meccaniche"
+                    values={sortedMechanisms.slice(0, 10)}
+                    withMore
+            />
+
+        </div>
+    </div>
+    </div>
+    </div>
+</Layout>

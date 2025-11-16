@@ -1,0 +1,33 @@
+---
+import Layout from "./Layout.astro";
+
+interface Props {
+  title: string,
+  items: {name: string; url: string}[],
+}
+
+const {title, items} = Astro.props;
+---
+
+<Layout title={title}>
+    <div class="flex justify-center">
+        <div class="container mb-5">
+            <div class="grid grid-cols-12">
+                <div class="col-span-8 col-start-3">
+                    <div class="my-6">
+                        <h1 class="text-4xl font-medium">{title}</h1>
+                    </div>
+                    <div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-1">
+                          {items.map(({name, url}) => (
+                                  <a href={url} class="hover:underline text-blue">
+                                      <div>{name}</div>
+                                  </a>
+                          ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

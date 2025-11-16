@@ -1,0 +1,31 @@
+---
+interface Props {
+  type: string;
+}
+
+const { type } = Astro.props;
+
+function getContent(type: string) {
+  switch (type) {
+    case "next":
+      return "I voti e i giudizi sono relativi solamente alle <strong>informazioni presenti online</strong> analizzate grazie ai nostri sofisticatissimi strumenti di laboratorio!";
+    default:
+      return "I voti e i giudizi sono relativi solamente alla <strong>copia</strong> analizzata grazie ai nostri sofisticatissimi strumenti di laboratorio!";
+  }
+}
+
+if (type === "review") {
+  return null;
+}
+
+const content = getContent(type);
+---
+
+<div class="disclaimer mb-5">
+    <h5 class="font-semibold text-xl text-gray300 mb-0.5">Disclaimer</h5>
+    <small>
+    Vi ricordiamo che state leggendo l'<strong>anteprima</strong> di un gioco non ancora esistente che i vostri
+    Dudes sono andati a recuperare nelle profondità dello spazio!<br /><br />
+    <Fragment set:html={content} />
+  </small>
+</div>

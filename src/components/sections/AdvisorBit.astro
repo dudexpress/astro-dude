@@ -1,0 +1,39 @@
+---
+import BaseSection from "./BaseSection.astro";
+import GameCard from "../misc/GameCard.astro";
+import PostWriter from "../PostWriter.astro";
+import type {Frontmatter} from "../../types.ts";
+import {buildPosts, getPostFiles} from "../../utils.ts";
+
+interface Props {
+  slug: string;
+  writer: string;
+  img?: string;
+}
+
+const {slug, writer} = Astro.props;
+
+const allPosts = (await buildPosts(getPostFiles()))
+
+const review = allPosts.find((post) => {
+  const filePath = post.file || "";
+  const slugFromPath = filePath.split("/reviews/")[1]?.split("/")[0];
+  return slugFromPath === slug;
+});
+
+if (!review) {
+  throw new Error(`Review with slug "${slug}" not found`);
+}
+---
+
+<BaseSection
+        title={`Il consiglio di ${writer}`}
+        trait="pink"
+        className="mb-4"
+>
+    <GameCard {...review} className="bg-white !border-[#d7e1ea] hover:!border-[#bdccdb]" />
+    <div class="font-serif text-xl mt-4">
+        <slot/>
+    </div>
+    <PostWriter writerName={writer} asCard={true} inAdvisor={true} />
+</BaseSection>

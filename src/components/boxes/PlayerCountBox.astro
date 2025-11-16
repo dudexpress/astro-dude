@@ -1,0 +1,45 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: number;
+  officialValue: string;
+  small?: boolean;
+}
+
+const { value, officialValue, small } = Astro.props;
+
+const randomNumber = (() => {
+  let array = [...new Array(16)].map((_, x) => x + 1);
+
+  return array
+    .slice()
+    .sort(() => Math.random() - 0.5)
+    .slice(0, value);
+})();
+
+const height = (() => {
+  if (value <= 4) return small ? 30 : 50;
+
+  return small ? 25 : 40;
+})();
+---
+
+<BaseBox
+  title="Giocatori"
+  footer={`Dichiarati: ${officialValue}`}
+  small={small}
+>
+  <span class="leading-none flex flex-wrap justify-center">
+    {
+      randomNumber.map((id: number) => (
+        <img
+          src={`/gamers/${id}.png`}
+          alt={`gamer ${id}`}
+          height={height}
+          width={height}
+        />
+      ))
+    }
+  </span>
+</BaseBox>

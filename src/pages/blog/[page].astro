@@ -1,0 +1,18 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import {buildPosts, getPostFiles, type PostGlob, sortPosts} from "../../utils.ts";
+import GameList from "../../layouts/GameList.astro";
+
+interface Props {
+  page: Page<PostGlob>;
+}
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const sortedPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+  return paginate(sortedPosts, { pageSize: 10 });
+};
+
+const { page } = Astro.props;
+---
+
+<GameList title={`Blog - Pagina ${page.currentPage}`} games={page.data} prevUrl={page.url.prev} nextUrl={page.url.next} />

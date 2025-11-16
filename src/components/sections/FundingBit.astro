@@ -1,0 +1,65 @@
+---
+import BaseBox from "../boxes/BaseBox.astro";
+import BaseSection from "./BaseSection.astro";
+import DeadlineBox from "../boxes/DeadlineBox.astro";
+import DurationBox from "../boxes/DurationBox.astro";
+import HypeBox from "../boxes/HypeBox.astro";
+import SidebarLinks from "../SidebarLinks.astro";
+import PlayerCountBox from "../boxes/PlayerCountBox.astro";
+import type { PostWeight } from "../../types";
+import PriceBox from "../boxes/PriceBox.astro";
+import WeightBox from "../boxes/WeightBox.astro";
+
+interface Props {
+  title: string;
+  hype: number;
+  player_count: number;
+  player_count_official: string;
+  weight: PostWeight;
+  playing_time: string;
+  playing_time_official: string;
+  deadline: string;
+  delivery: string;
+  price: string;
+  otherPrice: string;
+  mechanism: string[];
+  designer?: string[];
+  publisher?: string[];
+}
+
+const {
+  title,
+  hype,
+  player_count,
+  player_count_official,
+  weight,
+  playing_time,
+  playing_time_official,
+  deadline,
+  delivery,
+  price,
+  otherPrice,
+  mechanism,
+  designer,
+  publisher,
+} = Astro.props;
+---
+
+<BaseSection title={title} publisher={publisher} designer={designer} trait="pink" className="mb-4">
+  <div slot="afterTitle" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-0 -mx-1.5">
+    <HypeBox value={hype} small />
+    <DurationBox value={playing_time} officialValue={playing_time_official} small />
+    <WeightBox value={weight} small />
+    <PlayerCountBox value={player_count} officialValue={player_count_official} small />
+    <DeadlineBox value={deadline} deliveryValue={delivery} small />
+    <PriceBox value={price} otherValue={otherPrice} small />
+    <div class="col-span-1 md:col-span-2 xl:col-span-3">
+      <BaseBox title="Meccaniche" small noHeight>
+        <SidebarLinks type="mechanisms" values={mechanism} small />
+      </BaseBox>
+    </div>
+  </div>
+  <div class="mt-4">
+    <slot />
+  </div>
+</BaseSection>

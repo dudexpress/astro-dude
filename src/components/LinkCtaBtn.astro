@@ -1,0 +1,15 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+}
+
+const { slug, title } = Astro.props;
+---
+
+<a
+  href={slug}
+  class="font-sans font-bold inline-block py-1 px-2 text-white rounded-full shadow bg-red review-link
+ hover:brightness-92 text-lg transition-all duration-150 ease-in-out"
+  >{title} →</a
+>

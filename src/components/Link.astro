@@ -1,0 +1,30 @@
+---
+interface Props {
+  to: string;
+}
+
+const {to} = Astro.props
+---
+
+<a href={to} class="review-link">
+    <slot/>
+</a>
+
+<style>
+    .review-link {
+        border-radius: var(--radius-lg);
+        padding: 0 calc(var(--spacing) / 2);
+        background: var(--white);
+        color: var(--red);
+        border: 1px solid var(--red);
+        transition: background-color 0.2s ease-out;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .review-link:hover {
+        background: var(--red) !important;
+        color: var(--white);
+    }
+</style>
+

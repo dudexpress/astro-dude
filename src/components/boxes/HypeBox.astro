@@ -1,0 +1,50 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: number;
+  small?: boolean;
+}
+
+const { value, small } = Astro.props;
+const size = small ? 30 : 45;
+
+function renderFull(amount: number) {
+  return Array.from({ length: amount })
+    .map(
+      () =>
+        `<img src="/stars/full.png" alt="heart" height="${size}" width="${size}" />`
+    )
+    .join("");
+}
+
+function renderEmpty(amount: number) {
+  return Array.from({ length: amount })
+    .map(
+      () =>
+        `<img src="/stars/empty.png" alt="heart" height="${size}" width="${size}" />`
+    )
+    .join("");
+}
+
+function renderHalf(toRender: boolean) {
+  if (!toRender) return "";
+  return `<img src="/stars/half.png" alt="heart" height="${size}" width="${size}" />`;
+}
+
+const fullHearts = Math.floor(value / 2);
+const withHalf = value % 2 === 1;
+const emptyHearts = 5 - fullHearts - (withHalf ? 1 : 0);
+
+const starsHtml = `
+  ${renderFull(fullHearts)}
+  ${renderHalf(withHalf)}
+  ${renderEmpty(emptyHearts)}
+`;
+---
+
+<BaseBox title="Hype" footer={`${value} / 10`} small={small}>
+  <span class="leading-none flex flex-wrap justify-center">
+    <Fragment set:html={starsHtml} />
+  </span>
+</BaseBox>

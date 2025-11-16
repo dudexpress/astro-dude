@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Sora:wght@100..800&display=swap");
+@import "tailwindcss";
+
+:root {
+  --gray400: #27272d;
+  --gray300: #454548;
+  --gray200: #f2f5f8;
+  --white: white;
+
+  --red: #fe4655;
+  --pink: #ff9aaf;
+  --orange: #ffa059;
+  --green: #99d856;
+  --blue: #7371a8;
+
+  --spacing: 8px;
+
+  --box-height: 240px;
+  --half-box-height: 120px;
+}
+
+@theme inline {
+  --color-*: initial;
+  --color-gray400: var(--gray400);
+  --color-gray300: var(--gray300);
+  --color-gray200: var(--gray200);
+  --color-white: var(--white);
+
+  --color-red: var(--red);
+  --color-pink: var(--pink);
+  --color-orange: var(--orange);
+  --color-green: var(--green);
+  --color-blue: var(--blue);
+
+  --font-sans: "Sora", sans-serif;
+  --font-serif: "Lora", serif;
+}
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+}

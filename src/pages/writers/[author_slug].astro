@@ -1,0 +1,49 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import {buildPosts, getPostFiles, slug, sortPosts} from "../../utils";
+import {authors} from "../../authors";
+import type {Author} from "../../types";
+import PostWriter from "../../components/PostWriter.astro";
+import GameCard from "../../components/misc/GameCard.astro";
+
+export async function getStaticPaths() {
+  const sortedPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+
+  const writers = new Set<string>();
+  sortedPosts.forEach((page) => {
+    if (page.frontmatter.writer != null) {
+      writers.add(page.frontmatter.writer);
+    }
+  });
+
+  return [...writers].map((writer) => ({
+    params: {author_slug: slug(writer)},
+    props: {
+      writer: authors.find((a: Author) => a.name === writer),
+      allPosts: sortedPosts.filter((page) => slug(page.frontmatter.writer ?? '') === slug(writer))
+    },
+  }));
+}
+
+const {writer, allPosts} = Astro.props;
+if (writer == null) {
+  throw new Error(`Author not found`);
+}
+---
+
+<Layout title={writer.name}>
+    <div class="flex justify-center">
+        <div class="container mb-5">
+            <div class="grid grid-cols-12">
+                <div class="col-span-8 col-start-3">
+                    <div class="my-5">
+                        <PostWriter writerName={writer?.name} asCard={false}/>
+                    </div>
+                    <div class="grid gap-1">
+                      {allPosts.map((page) => <GameCard {...page} />)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

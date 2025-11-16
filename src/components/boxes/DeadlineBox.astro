@@ -1,0 +1,15 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: string;
+  deliveryValue: string;
+  small?: boolean;
+}
+
+const { value, deliveryValue, small } = Astro.props;
+---
+
+<BaseBox title="Scadenza" footer={`Consegna: ${deliveryValue}`} small={small}>
+  {value}
+</BaseBox>

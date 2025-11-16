@@ -1,0 +1,30 @@
+---
+import BlogPostHeader from "../components/BlogPostHeader.astro";
+import Layout from "./Layout.astro";
+import PostWriter from "../components/PostWriter.astro";
+import ReadMore from "../components/misc/ReadMore.astro";
+
+const { frontmatter, file } = Astro.props;
+---
+
+<Layout title={frontmatter.title}>
+    <BlogPostHeader frontmatter={frontmatter} file={file} />
+
+    <article class="relative z-[1] bg-gray200 py-[calc(var(--box-height)_/_2)] flex justify-center">
+        <div class="template-blog-post container">
+            <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-12 md:col-span-8 lg:col-span-7 lg:col-start-2 text-xl leading-4.5 font-serif template-blog-post-main-content">
+                    <slot />
+                </div>
+            </div>
+          {frontmatter.writer && (
+            <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-12 md:col-span-8 lg:col-span-7 lg:col-start-2 text-xl leading-4.5 font-serif">
+                    <PostWriter writerName={frontmatter.writer} asCard={true} />
+                </div>
+            </div>
+          )}
+        </div>
+    </article>
+    <ReadMore />
+</Layout>

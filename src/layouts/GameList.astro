@@ -1,0 +1,56 @@
+---
+import GameCard from "../components/misc/GameCard.astro";
+import type {PostGlob} from "../utils";
+import Layout from "./Layout.astro";
+
+interface Props {
+  title: string;
+  games: PostGlob[]
+
+  subTitle?: string;
+  folderUrl?: string;
+
+  prevUrl?: string;
+  nextUrl?: string;
+}
+
+const {title, subTitle, folderUrl, games, prevUrl, nextUrl} = Astro.props
+---
+
+<Layout title={title}>
+    <div class="flex justify-center">
+        <div class="container mb-5">
+            <div class="grid grid-cols-12">
+                <div class="col-span-8 col-start-3">
+                    <div class="my-5">
+                        <h1 class="text-4xl font-medium capitalize">{title}</h1>
+                      {subTitle && <a href={folderUrl} class="hover:underline text-blue">{subTitle}</a>}
+                    </div>
+                    <div class="grid gap-1">
+                      {games.map((game) =><GameCard {...game}/>)}
+                    </div>
+
+                    <nav class="flex justify-center items-center gap-1 mt-5">
+                      {prevUrl && (
+                              <a
+                                      href={prevUrl}
+                                      class="px-2 py-1 border-3 rounded border-gray200 hover:border-[#d9dfe5]"
+                              >
+                                  ←
+                              </a>
+                      )}
+
+                      {nextUrl && (
+                              <a
+                                      href={nextUrl}
+                                      class="px-2 py-1 border-3 rounded border-gray200 hover:border-[#d9dfe5]"
+                              >
+                                  →
+                              </a>
+                      )}
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

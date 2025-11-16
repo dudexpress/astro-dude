@@ -1,0 +1,9 @@
+---
+import {buildPosts, getPostFiles, slug} from "../../utils.ts";
+import NavLinks from "../../layouts/NavLinks.astro";
+
+const allFiles = await buildPosts(getPostFiles());
+const mechanisms = [...new Set(allFiles.flatMap(x => x.frontmatter.mechanisms).filter(Boolean))].sort();
+---
+
+<NavLinks title="Meccaniche" items={mechanisms.map(name => ({name, url: `/mechanisms/${slug(name)}`}))}/>

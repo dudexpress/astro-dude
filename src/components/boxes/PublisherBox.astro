@@ -1,0 +1,14 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: string;
+  small?: boolean;
+}
+
+const { value, small } = Astro.props;
+---
+
+<BaseBox title="Editore" small={small}>
+  {value}
+</BaseBox>

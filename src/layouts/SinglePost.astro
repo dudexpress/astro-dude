@@ -1,0 +1,50 @@
+---
+import BlogPostHeader from "../components/BlogPostHeader.astro";
+import BlogPostBoxes from "../components/BlogPostBoxes.astro";
+import Layout from "./Layout.astro";
+import PostWriter from "../components/PostWriter.astro";
+import SidebarLinks from "../components/SidebarLinks.astro";
+import SidebarVotes from "../components/SidebarVotes.astro";
+import Disclaimer from "../components/sidebar/Disclaimer.astro";
+import ReadMore from "../components/misc/ReadMore.astro";
+
+const { frontmatter, file } = Astro.props;
+---
+
+<Layout title={frontmatter.title}>
+  <BlogPostHeader frontmatter={frontmatter} file={file} />
+  <BlogPostBoxes frontmatter={frontmatter} />
+
+  <article
+    class="relative z-[1] bg-gray200 pb-[calc(var(--box-height)_/_2)]
+         pt-[calc(11/3_*_var(--box-height))] -mt-[calc(3.5_*_var(--box-height))]
+         md:pt-[calc(5/3_*_var(--box-height))] md:-mt-[calc(1.5_*_var(--box-height))]
+         xl:pt-[var(--box-height)] xl:-mt-[calc(0.5_*_var(--box-height))]
+         flex justify-center"
+  >
+    <div class="template-blog-post container">
+      <div class="grid grid-cols-12 gap-2">
+        <div
+          class="col-span-12 md:col-span-8 lg:col-span-7 lg:col-start-2 text-xl leading-4.5 font-serif template-blog-post-main-content"
+        >
+          <slot />
+        </div>
+        <div class="col-span-12 md:col-span-3 md:col-start-10">
+            <SidebarLinks type="designers" values={frontmatter.designer} />
+            <SidebarLinks type="publishers" values={frontmatter.publisher} />
+            <SidebarLinks type="mechanisms" values={frontmatter.mechanisms} />
+            <SidebarVotes values={frontmatter.sidebar_votes} />
+            <Disclaimer type={frontmatter.type} />
+        </div>
+      </div>
+      <div class="grid grid-cols-12 gap-2">
+        <div
+          class="col-span-12 md:col-span-8 lg:col-span-7 lg:col-start-2 text-xl leading-4.5 font-serif"
+        >
+          <PostWriter writerName={frontmatter.writer} asCard={true} />
+        </div>
+      </div>
+    </div>
+  </article>
+  <ReadMore />
+</Layout>

@@ -1,0 +1,32 @@
+---
+import {buildPosts, getPostFiles, slug, sortPosts} from "../../utils";
+import GameList from "../../layouts/GameList.astro";
+
+export async function getStaticPaths() {
+  const sortedPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+
+  const publishers = new Set<string>();
+  sortedPosts.forEach((page) => {
+    if (page.frontmatter?.publisher && Array.isArray(page.frontmatter.publisher)) {
+      page.frontmatter.publisher.forEach((publisher: string) => {
+        publishers.add(publisher);
+      });
+    }
+  });
+
+  return [...publishers].map((publisher) => ({
+    params: {publisher_slug: slug(publisher)},
+    props: {
+      publisher,
+      allPosts: sortedPosts.filter((page) => page.frontmatter.publisher?.some((m: string) => slug(m) === slug(publisher)))
+    },
+  }));
+}
+
+const {publisher, allPosts} = Astro.props;
+if (publisher == null) {
+  throw new Error(`publisher not found`);
+}
+---
+
+<GameList title={publisher} subTitle="vedi tutti gli editori" folderUrl="/publishers" games={allPosts} />

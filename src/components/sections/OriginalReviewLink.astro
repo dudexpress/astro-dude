@@ -1,0 +1,22 @@
+---
+import GameCard from "../misc/GameCard.astro";
+import BaseSection from "./BaseSection.astro";
+import {buildPosts, getPostFiles, sortPosts} from "../../utils.ts";
+
+interface Props {
+  slug: string;
+}
+
+const {slug} = Astro.props
+
+const allPosts = (await buildPosts(getPostFiles()))
+const game = allPosts.find(x => x.file.includes(`/reviews/${slug}/`));
+
+if (game == null) {
+  return null
+}
+---
+
+<BaseSection title='Espansione di' trait="green" className="mb-4">
+    <GameCard {...game} className="my-5 bg-white !border-[#d7e1ea] hover:!border-[#bdccdb]" />
+</BaseSection>

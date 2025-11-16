@@ -1,0 +1,38 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: number;
+  small?: boolean;
+}
+
+const { value, small } = Astro.props;
+
+const label = (() => {
+  switch (value) {
+    case 1:
+      return "Leggerissimo";
+    case 2:
+      return "Leggero";
+    case 3:
+      return "Medio";
+    case 4:
+      return "Pesantino";
+    case 5:
+      return "Pesantissimo";
+    default:
+      return null;
+  }
+})();
+
+const size = small ? 45 : 75;
+---
+
+<BaseBox title="Impegno richiesto" footer={label} small={small}>
+  <img
+    src={`/weight/${value}.png`}
+    alt={`weight ${value}`}
+    height={size}
+    width={size}
+  />
+</BaseBox>

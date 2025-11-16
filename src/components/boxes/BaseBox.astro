@@ -1,0 +1,55 @@
+---
+import type { ReactNode } from "react";
+
+interface Props {
+  title: string;
+  footer?: ReactNode;
+  small?: boolean;
+  noHeight?: boolean;
+  noFooter?: boolean;
+}
+
+const { title, footer, small, noHeight, noFooter } = Astro.props;
+---
+
+<div
+  class:list={[
+    "text-center  bg-white text-gray400 border-10 border-gray200 rounded-lg",
+    {
+      "h-[var(--box-height)]": !small,
+      "h-[140px]": small,
+      "h-auto": noHeight,
+    },
+  ]}
+>
+  <div class:list={["flex flex-col justify-between p-2", {"h-full": !small}]}>
+    <h5
+      class:list={[
+        "font-sans font-medium mb-0",
+        {"text-xl": !small, "text-base": small },
+      ]}
+    >
+      {title}
+    </h5>
+    <div
+      class:list={[
+        "font-sans flex items-center justify-center",
+        {
+          "h-[110px] text-[3rem]": !small,
+          "h-[50px] text-[1.5rem]": small,
+          "h-auto": noHeight
+        },
+      ]}
+    >
+      <slot />
+    </div>
+    <div
+      class:list={[
+        "bg-gray200 rounded-full bt-0 p-0 font-serif",
+        { "text-sm": small },
+      ]}
+    >
+      {footer}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: string;
+  otherValue: string;
+  small?: boolean;
+}
+
+const { value, otherValue, small } = Astro.props;
+---
+
+<BaseBox title="Prezzo base" footer={`Spedizioni: ${otherValue}`} small={small}>
+  {value}
+</BaseBox>

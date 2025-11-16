@@ -1,0 +1,34 @@
+---
+import type { Frontmatter } from "../../types.ts";
+import type {GetStaticPaths, Page} from "astro";
+import {buildPosts, getPostFiles, type PostGlob, sortPosts, titleize, typeToPage} from "../../utils.ts";
+import GameList from "../../layouts/GameList.astro";
+
+interface Props {
+  page: Page<PostGlob>;
+  title: string;
+}
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const sortedPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+
+  const types = new Set<Frontmatter['type']>();
+  sortedPosts.forEach((page) => {
+    types.add(page.frontmatter.type);
+  });
+
+  return [...types].flatMap((t ) => {
+    const filteredPosts = sortedPosts.filter((page) => page.frontmatter.type === t)
+    return paginate(filteredPosts, {
+      pageSize: 10,
+      params: {type: typeToPage[t], },
+      props: {title: `Dude${titleize(t)}`}
+    })
+  });
+}
+
+const {page, title} = Astro.props;
+const {type} = Astro.params
+---
+
+<GameList title={`${title} - Pagina ${page.currentPage}`} games={page.data} prevUrl={page.url.prev} nextUrl={page.url.next} />

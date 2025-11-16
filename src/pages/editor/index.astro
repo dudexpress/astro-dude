@@ -1,0 +1,68 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Editor from "../../components/editor/Editor.tsx";
+import {buildPosts, getPostFiles} from "../../utils.ts";
+
+const allPosts = (await buildPosts(getPostFiles()))
+
+let mechanismsCounter: Record<string, number> = {}
+let designersCounter: Record<string, number> = {}
+let publishersCounter: Record<string, number> = {}
+
+for (const {frontmatter} of allPosts) {
+  for (const m of frontmatter.designer ?? []) {
+    designersCounter[m] = (designersCounter[m] ?? 0) + 1
+  }
+  for (const m of frontmatter.publisher ?? []) {
+    publishersCounter[m] = (publishersCounter[m] ?? 0) + 1
+  }
+  for (const m of frontmatter.mechanisms ?? []) {
+    mechanismsCounter[m] = (mechanismsCounter[m] ?? 0) + 1
+  }
+}
+
+const writers = ['Tia', 'Fora', 'Dadi-Daddy']
+const designers = Object.keys(designersCounter)
+const publishers = Object.keys(publishersCounter)
+const mechanisms = Object.keys(mechanismsCounter)
+---
+
+<Layout title='Editor'>
+    <div class="flex justify-center">
+        <div class="container mb-5">
+            <div class="grid grid-cols-12">
+                <div class="col-span-8 col-start-3">
+                    <div class="my-6">
+                        <h1 class="text-4xl font-medium">Editor</h1>
+                    </div>
+                    <div class="shadcn-tailwind"></div>
+                    <Editor
+                            client:only
+                            writers={writers}
+                            designers={designers}
+                            publishers={publishers}
+                            mechanisms={mechanisms}
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style is:global>
+    .ProseMirror {
+        min-height: 200px;
+        outline: none;
+    }
+
+    .ProseMirror p {
+        display: block;
+        margin: 0 0 0.75em 0;
+    }
+
+    .ProseMirror p:last-child::after {
+        content: "";
+        display: inline-block;
+        height: 1em;
+    }
+</style>

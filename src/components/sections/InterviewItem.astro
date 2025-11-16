@@ -1,0 +1,87 @@
+---
+interface Props {
+  name: string;
+  type:  "question" | "answer"
+}
+
+const {name, type} = Astro.props
+---
+
+<div class='chat-container'>
+    <div class={type === "answer" ? "chat-left" : 'chat-right'}>
+      {type === "question" && <div class='chat-text'><slot /></div>}
+        <div class='chat-avatar'>
+            <div>{type === "question" ? "🚀" : name}</div>
+        </div>
+      {type === "answer" && <div class='chat-text'><slot /></div>}
+    </div>
+</div>
+
+<style>
+    .chat-container {
+        .chat-left,
+        .chat-right {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+            margin-bottom: calc(5 * var(--spacing));
+        }
+
+        div.chat-right {
+            margin-top: calc(10 * var(--spacing));
+        }
+
+        div.chat-right {
+            justify-content: flex-end;
+        }
+
+        div .chat-avatar div {
+            height: calc(6 * var(--spacing));
+            width: calc(6 * var(--spacing));
+            background: var(--red);
+            color: var(--white);
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 100%;
+            margin-left: 0;
+            margin-right: 20px;
+        }
+
+        div.chat-right > .chat-avatar div {
+            margin-left: 20px;
+            margin-right: 0;
+            background: var(--orange);
+            font-size: 23px;
+        }
+
+        div .chat-text {
+            padding: 16px;
+            border-radius: var(--radius-2xl);
+            background: var(--white);
+            position: relative;
+        }
+
+        div .chat-text:before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 10px;
+            left: -20px;
+            border: 10px solid;
+            border-color: transparent #ffffff transparent transparent;
+        }
+
+        div.chat-right > .chat-text {
+            text-align: right;
+        }
+
+        div.chat-right > .chat-text:before {
+            right: -20px;
+            border-color: transparent transparent transparent var(--white);
+            left: inherit;
+        }
+    }
+</style>

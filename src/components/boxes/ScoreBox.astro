@@ -1,0 +1,58 @@
+---
+import BaseBox from "./BaseBox.astro";
+
+interface Props {
+  value: number;
+  small?: boolean;
+}
+
+const { value, small = false } = Astro.props;
+
+const MAX_HEARTS = 5;
+const SMALL_SIZE = 30;
+const NORMAL_SIZE = 45;
+
+const size = small ? SMALL_SIZE : NORMAL_SIZE;
+
+const SCORE_LABELS: Record<number, string> = {
+  10: "Immancabile",
+  9: "Eccellente",
+  8: "Da avere",
+  7: "Da provare",
+  6: "Si difende",
+  5: "C'è di meglio",
+};
+
+const label = SCORE_LABELS[value] ?? "Meh";
+
+type HeartType = "full" | "half" | "empty";
+
+interface Heart {
+  type: HeartType;
+  index: number;
+}
+
+const fullHearts = Math.floor(value / 2);
+const hasHalfHeart = value % 2 === 1;
+const emptyHearts = MAX_HEARTS - fullHearts - (hasHalfHeart ? 1 : 0);
+
+const hearts: Heart[] = [
+  ...Array.from({ length: fullHearts }, (_, i) => ({ type: "full" as HeartType, index: i })),
+  ...(hasHalfHeart ? [{ type: "half" as HeartType, index: fullHearts }] : []),
+  ...Array.from({ length: emptyHearts }, (_, i) => ({ type: "empty" as HeartType, index: fullHearts + (hasHalfHeart ? 1 : 0) + i })),
+];
+---
+
+<BaseBox title="Punteggio" footer={label} small={small}>
+  <span class="leading-none flex flex-wrap justify-center">
+    {hearts.map(({ type, index }) => (
+      <img
+        key={index}
+        src={`/hearts/${type}.png`}
+        alt={`${type} heart`}
+        height={size}
+        width={size}
+      />
+    ))}
+  </span>
+</BaseBox>

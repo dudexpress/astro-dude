@@ -1,0 +1,59 @@
+---
+import type { Frontmatter } from "../types";
+import DurationBox from "./boxes/DurationBox.astro";
+import HypeBox from "./boxes/HypeBox.astro";
+import PlayerCountBox from "./boxes/PlayerCountBox.astro";
+import ScoreBox from "./boxes/ScoreBox.astro";
+import WeightBox from "./boxes/WeightBox.astro";
+
+interface Props {
+  frontmatter: Pick<
+    Frontmatter,
+    | "type"
+    | "score"
+    | "playing_time"
+    | "playing_time_official"
+    | "weight"
+    | "player_count"
+    | "player_count_official"
+  >;
+}
+
+const {
+  type,
+  score,
+  playing_time,
+  playing_time_official,
+  weight,
+  player_count,
+  player_count_official,
+} = Astro.props.frontmatter;
+
+const ScoreComponent =
+  type === "next" || type === "preview" ? HypeBox : ScoreBox;
+---
+
+<div class="flex justify-center relative z-2">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+      <div>
+        <ScoreComponent value={score} />
+      </div>
+      <div>
+        <DurationBox
+          value={playing_time}
+          officialValue={playing_time_official}
+        />
+      </div>
+      <div>
+        <WeightBox value={weight} />
+      </div>
+      <div>
+        <PlayerCountBox
+          value={player_count}
+          officialValue={player_count_official}
+        />
+      </div>
+    </div>
+  </div>
+</div>

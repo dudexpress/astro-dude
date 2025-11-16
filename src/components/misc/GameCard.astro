@@ -1,0 +1,101 @@
+---
+import {Image} from 'astro:assets';
+import type {Frontmatter} from "../../types.ts";
+import {formatDate} from "../../utils.ts";
+
+interface Props {
+  frontmatter: Frontmatter;
+  file: string;
+  className?: string;
+}
+
+const {frontmatter, file, className = ''} = Astro.props;
+
+const folder = file.replace('/index.mdx', '')
+const images = Object.entries(import.meta.glob<{ default: ImageMetadata }>(
+  '/src/**/_cover*',
+  {eager: true}
+)).filter(([imagePath, imageFn]) => {
+  return imagePath.includes(folder);
+})
+
+const image = images[0][1]?.default
+
+const url = (() => {
+  const tokens = file.split('/')
+  tokens.pop()
+  return '/' + tokens.slice(-2).join("/");
+})()
+---
+
+<div
+        class:list={[
+          'game-card',
+          'border-[10px] rounded-2xl transition-colors duration-200 ease-out',
+          'border-gray200 hover:border-[#d9dfe5]',
+          className,
+        ]}
+>
+    <a href={url} class="stretched-link"></a>
+    <div class="game-card-body flex items-center p-2 ">
+        <div class="w-full grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div class="md:col-span-2 mb-3 md:mb-0">
+              {image && (
+                      <Image
+                              src={image}
+                              alt="cover"
+                              class="rounded-2xl w-1/3 md:w-full"
+                      />
+              )}
+            </div>
+            <div class="md:col-span-10">
+                <div class="flex flex-col justify-center h-full gap-1">
+                    <h4 class="font-sans font-bold text-gray400 no-underline text-2xl">
+                      {frontmatter.title}
+                    </h4>
+                    <div>
+                      {
+                        frontmatter.mechanisms && (
+                                      <div class="flex flex-row flex-wrap gap-0.5">
+                                        {frontmatter.mechanisms.map((mec) => (
+                                                <span class="badge p-0.5 text-xs bg-white text-red border border-red rounded-lg font-normal font-sans">
+                    {mec}
+                  </span>
+                                        ))}
+                                      </div>
+                        )
+                      }
+                    </div>
+                    <p class="font-serif">
+                      {frontmatter.description}
+                    </p>
+                    <small class="text-xs text-gray300">
+                      {frontmatter.writer}
+                      {frontmatter.writer && ' ● '}
+                        <span class="release-date">{formatDate(frontmatter.date)}</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stretched-link::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        content: '';
+    }
+
+    .game-card {
+        position: relative;
+    }
+
+    .game-card + .game-card {
+        margin-top: 8px;
+    }
+</style>

@@ -1,0 +1,44 @@
+---
+import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
+
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import Menu from "./misc/Menu.astro";
+---
+
+<header
+  class="fixed top-0 left-0 right-0 bg-white py-1 md:py-2 flex items-center justify-center z-100"
+>
+  <div class="container">
+    <div
+      class="flex w-full flex-column md:flex-row items-center justify-between md:items-end"
+    >
+      <a href="/">
+        <img
+          src="/logo/logo-small.svg"
+          alt="dudexpress small logo"
+          height={50}
+          width={206}
+        />
+      </a>
+      <div
+        class="flex justify-between items-center align-end mt-2 mt-md-0 gap-3"
+      >
+          <Menu />
+        <a href="/search">
+          <div class="flex gap-1 items-center font-semibold">
+            Cerca
+            <i class="icon" set:html={icon(faSearch).html} />
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .icon {
+    width: 1.1em;
+    height: 1.1em;
+    display: block;
+  }
+</style>

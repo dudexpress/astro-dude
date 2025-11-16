@@ -1,0 +1,32 @@
+---
+import {buildPosts, getPostFiles, slug, sortPosts} from "../../utils";
+import GameList from "../../layouts/GameList.astro";
+
+export async function getStaticPaths() {
+  const sortedPosts = (await buildPosts(getPostFiles())).sort(sortPosts)
+
+  const designers = new Set<string>();
+  sortedPosts.forEach((page) => {
+    if (page.frontmatter?.designer && Array.isArray(page.frontmatter.designer)) {
+      page.frontmatter.designer.forEach((designer: string) => {
+        designers.add(designer);
+      });
+    }
+  });
+
+  return [...designers].map((designer) => ({
+    params: {designer_slug: slug(designer)},
+    props: {
+      designer,
+      allPosts: sortedPosts.filter((page) => page.frontmatter.designer?.some((m: string) => slug(m) === slug(designer)))
+    },
+  }));
+}
+
+const {designer, allPosts} = Astro.props;
+if (designer == null) {
+  throw new Error(`designer not found`);
+}
+---
+
+<GameList title={designer} subTitle="vedi tutti gli autori" folderUrl="/designers" games={allPosts} />

@@ -1,0 +1,11 @@
+---
+import type {GetStaticPaths} from "astro";
+import {typeToPage} from "../../utils.ts";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return Object.values(typeToPage).map(x => ( { params: { type: x }}))
+}
+
+const {type} = Astro.params
+return Astro.redirect(`/${type}/1`, 302);
+---

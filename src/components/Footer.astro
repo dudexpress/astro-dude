@@ -1,0 +1,40 @@
+---
+import { faIcons } from "@fortawesome/free-solid-svg-icons/faIcons";
+import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { faDice } from "@fortawesome/free-solid-svg-icons/faDice";
+import { faCogs } from "@fortawesome/free-solid-svg-icons/faCogs";
+
+import { icon } from "@fortawesome/fontawesome-svg-core";
+---
+
+<div class="flex flex-row gap-3 font">
+  <a href="/blog" class="flex flex-row gap-1">
+    <i class="icon" set:html={icon(faDice).html} />
+    <span class="text-sm hidden md:inline-block">Articoli</span>
+  </a>
+  <a href="/mechanisms" class="flex flex-row gap-1">
+    <i class="icon" set:html={icon(faCogs).html} />
+    <span class="text-sm hidden md:inline-block">Meccaniche</span>
+  </a>
+  <a href="/credits" class="flex flex-row gap-1">
+    <i class="icon" set:html={icon(faIcons).html} />
+    <span class="text-sm hidden md:inline-block">Credits</span>
+  </a>
+
+  <a
+    href="https://www.iubenda.com/privacy-policy/42365225"
+    target="_blank"
+    class="flex flex-row gap-1"
+  >
+    <i class="icon" set:html={icon(faEye).html} />
+    <span class="text-sm hidden md:inline-block">Privacy Policy</span>
+  </a>
+
+  <style>
+    .icon {
+      width: 1.33em;
+      height: 1.33em;
+      display: block;
+    }
+  </style>
+</div>

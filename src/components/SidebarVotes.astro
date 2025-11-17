@@ -15,11 +15,11 @@ function renderCircles(length: number, sign: string): string[] {
 }
 ---
 
-<div class="mb-4">
+<div class="mb-4 text-center lg:text-start">
   {values.map((vote) => (
           <div class="py-2">
               <h5 class="font-semibold text-xl text-gray300 mb-0.5">{vote.title}</h5>
-              <div class="text-blue flex">
+              <div class="text-blue flex justify-center lg:justify-start">
                 {renderCircles(vote.value, "⬤")}{renderCircles(5 - vote.value, "◯")}
               </div>
           </div>

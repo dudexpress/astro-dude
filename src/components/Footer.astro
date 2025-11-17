@@ -7,24 +7,27 @@ import { faCogs } from "@fortawesome/free-solid-svg-icons/faCogs";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 ---
 
-<div class="flex flex-row gap-3 font">
+<div class="flex flex-col md:flex-row gap-3">
+    <div class="flex flex-row gap-3 justify-center">
   <a href="/blog" class="flex flex-row gap-1">
     <i class="icon" set:html={icon(faDice).html} />
-    <span class="text-sm hidden md:inline-block">Articoli</span>
+    <span class="text-sm hidden lg:inline-block">Articoli</span>
   </a>
   <a href="/mechanisms" class="flex flex-row gap-1">
     <i class="icon" set:html={icon(faCogs).html} />
-    <span class="text-sm hidden md:inline-block">Meccaniche</span>
+    <span class="text-sm hidden lg:inline-block">Meccaniche</span>
   </a>
   <a href="/credits" class="flex flex-row gap-1">
     <i class="icon" set:html={icon(faIcons).html} />
-    <span class="text-sm hidden md:inline-block">Credits</span>
+    <span class="text-sm hidden lg:inline-block">Credits</span>
   </a>
 
+    </div>
+    <div class="flex flex-row gap-3 justify-center">
     <a href="https://www.iubenda.com/privacy-policy/68690436" class="iubenda-black iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy Policy</a><script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
 
     <a href="https://www.iubenda.com/privacy-policy/68690436/cookie-policy" class="iubenda-black iubenda-noiframe iubenda-embed iubenda-noiframe " title="Cookie Policy ">Cookie Policy</a><script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
-
+    </div>
 
   <style>
     .icon {

@@ -19,44 +19,32 @@ const tabTitle = title == null ? "dudexpress" : `${title} | dudexpress`;
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <title>{tabTitle}</title>
+
     {
       import.meta.env.PROD && (
-                    <>
-                        <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-1W60BXW0Z6"></script>
-                        <script is:inline>
-                          window.dataLayer = window.dataLayer || [];
+           <>
+               <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-1W60BXW0Z6"></script>
+               <script is:inline>
+                 window.dataLayer = window.dataLayer || [];
+                 function gtag() {
+                     dataLayer.push(arguments);
+                 }
+                 gtag("js", new Date());
 
-                          function gtag() {
-                            dataLayer.push(arguments);
-                          }
+                 gtag("consent", "default", {
+                     ad_storage: "denied",
+                     ad_user_data: "denied",
+                     ad_personalization: "denied",
+                     analytics_storage: "denied",
+                 });
 
-                          gtag('js', new Date());
-
-                          gtag('config', 'G-1W60BXW0Z6');
-                        </script>
-                    </>
+                 gtag("config", "G-1W60BXW0Z6");
+               </script>
+           </>
       )
     }
 
-      <script type="text/javascript">
-      var _iub = _iub || []
-      _iub.csConfiguration = {
-        priorConsent: false,
-        reloadOnConsent: true,
-        lang: "it",
-        siteId: 2419628,
-        cookiePolicyId: 42365225,
-        banner: {
-          content:
-            "Noi e terze parti selezionate utilizziamo cookie o tecnologie simili per finalità tecniche e, con il tuo consenso, anche per altre finalità come specificato nella cookie policy. Puoi acconsentire all’utilizzo di tali tecnologie chiudendo questa informativa.",
-          acceptButtonDisplay: true,
-          customizeButtonDisplay: false,
-          closeButtonDisplay: true,
-          position: "float-top-center",
-        },
-      }
-    </script>
-    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+
   </head>
   <body class="font-sans !text-[#212529] antialiased">
     <Topbar />

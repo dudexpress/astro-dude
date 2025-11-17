@@ -20,27 +20,29 @@ const tabTitle = title == null ? "dudexpress" : `${title} | dudexpress`;
     <meta name="generator" content={Astro.generator} />
     <title>{tabTitle}</title>
 
+
     {
       import.meta.env.PROD && (
-           <>
-               <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-1W60BXW0Z6"></script>
-               <script is:inline>
-                 window.dataLayer = window.dataLayer || [];
-                 function gtag() {
-                     dataLayer.push(arguments);
-                 }
-                 gtag("js", new Date());
+        <>
+          <script type="text/javascript" is:inline src="https://embeds.iubenda.com/widgets/7331963d-f1c3-445e-b793-b3b1e8edee51.js"></script>
+          <script is:inline src="https://www.googletagmanager.com/gtag/js?id=G-1W60BXW0Z6"></script>
+          <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
 
-                 gtag("consent", "default", {
-                     ad_storage: "denied",
-                     ad_user_data: "denied",
-                     ad_personalization: "denied",
-                     analytics_storage: "denied",
-                 });
+            gtag("consent", "default", {
+                ad_storage: "denied",
+                ad_user_data: "denied",
+                ad_personalization: "denied",
+                analytics_storage: "denied",
+            });
 
-                 gtag("config", "G-1W60BXW0Z6");
-               </script>
-           </>
+            gtag("config", "G-1W60BXW0Z6");
+          </script>
+        </>
       )
     }
 

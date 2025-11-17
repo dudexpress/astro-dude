@@ -11,8 +11,7 @@ import {remarkMdxAutoImports} from './src/lib/remark-mdx-auto-imports.mjs';
 
 
 export default defineConfig({
-    site: 'https://dudexpress.github.io',
-    base: '/astro-dude',
+    site: 'https://dudexpress.it',
     integrations: [
         react(),
         mdx({remarkPlugins: [remarkMdxAutoImports]})

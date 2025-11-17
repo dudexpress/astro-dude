@@ -20,6 +20,7 @@ const tabTitle = title == null ? "dudexpress" : `${title} | dudexpress`;
     <meta name="generator" content={Astro.generator} />
     <title>{tabTitle}</title>
 
+    <slot name="head" />
 
     {
       import.meta.env.PROD && (

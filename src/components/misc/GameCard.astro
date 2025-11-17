@@ -1,7 +1,7 @@
 ---
 import {Image} from 'astro:assets';
 import type {Frontmatter} from "../../types.ts";
-import {formatDate} from "../../utils.ts";
+import {formatDate, getUrl} from "../../utils.ts";
 
 interface Props {
   frontmatter: Frontmatter;
@@ -21,11 +21,7 @@ const images = Object.entries(import.meta.glob<{ default: ImageMetadata }>(
 
 const image = images[0][1]?.default
 
-const url = (() => {
-  const tokens = file.split('/')
-  tokens.pop()
-  return '/' + tokens.slice(-2).join("/");
-})()
+const url = getUrl(file);
 ---
 
 <div

@@ -3,11 +3,60 @@ import BlogPostHeader from "../components/BlogPostHeader.astro";
 import Layout from "./Layout.astro";
 import PostWriter from "../components/PostWriter.astro";
 import ReadMore from "../components/misc/ReadMore.astro";
+import {getUrl} from "../utils.ts";
 
 const { frontmatter, file } = Astro.props;
+const metaTitle = `${frontmatter.title} | dudexpress`
+const metaDescription = `${frontmatter.description}`
+
+const canonical = `https://dudexpress.it/${getUrl(file)}`;
+
+const structuredJSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  mainEntityOfPage: {"@type": "WebPage", "@id": canonical},
+  headline: frontmatter.title,
+  description: frontmatter.description,
+  // image: metaImage,
+  author: {
+    "@type": "Organization",
+    name: "dudexpress",
+    url: "https://dudexpress.it",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "dudexpress",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://dudexpress.it/logo/logo-small.svg",
+    },
+  },
+  datePublished: frontmatter.date,
+})
 ---
 
 <Layout title={frontmatter.title}>
+    <Fragment slot="head">
+        <meta name="description" content={metaDescription} />
+        <link rel="canonical" href={canonical} />
+        <meta
+          name="keywords"
+          content={`${frontmatter.title}, dudexpress, gioco, gioco da tavolo, recensioni, board game, review`}
+        />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <!--<meta property="og:image" content={metaImage} />-->
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <!--<meta name="twitter:image" content={metaImage} />-->
+
+        <script type="application/ld+json" set:html={structuredJSON}></script>
+    </Fragment>
+
     <BlogPostHeader frontmatter={frontmatter} file={file} />
 
     <article class="relative z-[1] bg-gray200 py-[calc(var(--box-height)_/_2)] flex justify-center">

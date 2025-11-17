@@ -7,11 +7,60 @@ import SidebarLinks from "../components/SidebarLinks.astro";
 import SidebarVotes from "../components/SidebarVotes.astro";
 import Disclaimer from "../components/sidebar/Disclaimer.astro";
 import ReadMore from "../components/misc/ReadMore.astro";
+import {getUrl} from "../utils.ts";
 
 const { frontmatter, file } = Astro.props;
+const metaTitle = `${frontmatter.title} | dudexpress`
+const metaDescription = `${frontmatter.description} | Recensione gioco da tavolo dudexpress`
+
+const structuredJSON = JSON.stringify({
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  name: frontmatter.title,
+  // image: metaImage,
+  review: [
+    {
+      "@type": "Review",
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: frontmatter.score ?? frontmatter.hype,
+        bestRating: "10",
+        worstRating: "0",
+      },
+      author: {
+        "@type": "Person",
+        name: frontmatter.writer,
+      },
+      datePublished: frontmatter.date,
+      publisher: { "@type": "Organization", name: "dudexpress" },
+      reviewBody: frontmatter.description,
+    },
+  ],
+})
 ---
 
 <Layout title={frontmatter.title}>
+    <Fragment slot="head">
+        <meta name="description" content={metaDescription} />
+        <link rel="canonical" href={`https://dudexpress.it/${getUrl(file)}`} />
+        <meta
+          name="keywords"
+          content={`${frontmatter.title}, dudexpress, gioco, gioco da tavolo, recensioni, board game, review`}
+        />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <!--<meta property="og:image" content={metaImage} />-->
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <!--<meta name="twitter:image" content={metaImage} />-->
+
+        <script type="application/ld+json" set:html={structuredJSON}></script>
+    </Fragment>
+
   <BlogPostHeader frontmatter={frontmatter} file={file} />
   <BlogPostBoxes frontmatter={frontmatter} />
 

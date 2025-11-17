@@ -51,6 +51,12 @@ export const titleize = (title: string) => {
   return a.toUpperCase() + title.slice(1).toLowerCase()
 }
 
+export const getUrl  = (file: string) => {
+  const tokens = file.split('/')
+  tokens.pop()
+  return '/' + tokens.slice(-2).join("/");
+}
+
 export const typeToPage: Record<Frontmatter['type'], string> = {
   review: 'reviews',
   preview: 'previews',

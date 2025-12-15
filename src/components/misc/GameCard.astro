@@ -11,7 +11,7 @@ interface Props {
 
 const {frontmatter, file, className = ''} = Astro.props;
 
-const folder = file.replace('/index.mdx', '')
+const folder = file.replace('/index.mdx', '/')
 const images = Object.entries(import.meta.glob<{ default: ImageMetadata }>(
   '/src/**/_cover*',
   {eager: true}
